@@ -25,12 +25,12 @@ use serde::{Deserialize, Serialize};
 
 // Used inside the #[cfg(not(test))] print block; dead in test builds.
 #[allow(dead_code)]
-const CRATE_NAME: &str = "markdown-tui-explorer";
-const CRATES_IO_URL: &str = "https://crates.io/api/v1/crates/markdown-tui-explorer";
+const CRATE_NAME: &str = "guniweb-md";
+const CRATES_IO_URL: &str = "https://crates.io/api/v1/crates/guniweb-md";
 const USER_AGENT: &str = concat!(
-    "markdown-tui-explorer/",
+    "guniweb-md/",
     env!("CARGO_PKG_VERSION"),
-    " (version-check; https://github.com/leboiko/markdown-reader)"
+    " (version-check; https://github.com/guniweb/guniweb-md)"
 );
 const CACHE_STALE_SECS: u64 = 60 * 60 * 24; // 24 hours
 
@@ -51,7 +51,7 @@ pub struct VersionCheckCache {
 /// only absent on some embedded or sandboxed environments).
 fn cache_path() -> Option<PathBuf> {
     let mut p = dirs::cache_dir()?;
-    p.push("markdown-tui-explorer");
+    p.push("guniweb-md");
     p.push("last-version-check.json");
     Some(p)
 }

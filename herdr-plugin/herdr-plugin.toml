@@ -1,0 +1,40 @@
+id = "guniweb.md"
+name = "guniweb-md"
+version = "0.1.0"
+min_herdr_version = "0.9.5"
+description = "Read and edit Markdown files next to your agent: Ctrl+click a .md link to open it in a live-reloading split pane"
+platforms = ["linux", "macos"]
+
+# Open the clicked or given Markdown file in a split pane.
+[[actions]]
+id = "open"
+title = "Open Markdown file"
+contexts = ["pane"]
+command = ["sh", "bin/open.sh"]
+
+# Browse the Markdown files below the focused pane's working directory.
+[[actions]]
+id = "browse"
+title = "Browse Markdown files"
+contexts = ["pane"]
+command = ["sh", "bin/open.sh", "--browse"]
+
+[[panes]]
+id = "viewer"
+title = "Markdown"
+placement = "split"
+command = ["sh", "bin/view.sh"]
+
+# Explicit hyperlinks (OSC 8) as emitted by Claude Code and other agents.
+[[link_handlers]]
+id = "file-url"
+title = "Open Markdown file"
+pattern = "(?i)^file://[^#?]*\\.(md|markdown|mdx)([#?].*)?$"
+action = "open"
+
+# Plain absolute or home-relative paths.
+[[link_handlers]]
+id = "path"
+title = "Open Markdown file"
+pattern = "(?i)^(/|~/)[^#?]*\\.(md|markdown|mdx)(:[0-9]+)*([#?].*)?$"
+action = "open"

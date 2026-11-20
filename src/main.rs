@@ -58,8 +58,8 @@ impl Drop for TerminalGuard {
 
 #[derive(Parser, Debug)]
 #[command(
-    name = "markdown-reader",
-    about = "A TUI markdown file viewer",
+    name = "gmd",
+    about = "guniweb-md: read and edit Markdown in the terminal",
     version
 )]
 struct Cli {

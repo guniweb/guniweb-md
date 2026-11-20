@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::theme::Theme;
 
-const APP_NAME: &str = "markdown-reader";
+const APP_NAME: &str = "guniweb-md";
 const CONFIG_FILE: &str = "config.toml";
 
 /// Default value for [`Config::mermaid_max_height`].

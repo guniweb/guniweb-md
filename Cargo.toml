@@ -2,13 +2,12 @@
 members = [".", "crates/mermaid-text"]
 
 [package]
-name = "markdown-tui-explorer"
-version = "1.35.4"
+name = "guniweb-md"
+version = "0.1.0"
 edition = "2024"
-description = "A terminal-based markdown file browser and viewer with search, syntax highlighting, and live reload"
+description = "Read and edit Markdown next to your coding agent: a terminal Markdown editor with hybrid live preview"
 license = "MIT"
-repository = "https://github.com/leboiko/markdown-reader"
-homepage = "https://github.com/leboiko/markdown-reader"
+repository = "https://github.com/guniweb/guniweb-md"
 keywords = ["markdown", "tui", "terminal", "viewer", "ratatui"]
 categories = ["command-line-utilities", "text-processing"]
 readme = "README.md"
@@ -18,7 +17,7 @@ readme = "README.md"
 exclude = ["docs/screenshots/*"]
 
 [[bin]]
-name = "markdown-reader"
+name = "gmd"
 path = "src/main.rs"
 
 [dependencies]

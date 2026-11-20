@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 
 use serde::{Deserialize, Serialize};
 
-const APP_NAME: &str = "markdown-reader";
+const APP_NAME: &str = "guniweb-md";
 const STATE_FILE: &str = "state.toml";
 
 /// Persisted state for a single open tab.

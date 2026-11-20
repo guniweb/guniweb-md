@@ -10,7 +10,7 @@ use std::process::Command;
 
 /// Use Cargo's compiled binary path, including custom target directories.
 fn binary() -> PathBuf {
-    env!("CARGO_BIN_EXE_markdown-reader").into()
+    env!("CARGO_BIN_EXE_gmd").into()
 }
 
 /// Happy path: a directory with only valid links exits with status 0.

@@ -1183,6 +1183,42 @@ dependencies = [
 ]
 
 [[package]]
+name = "guniweb-md"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "base64 0.22.1",
+ "clap",
+ "crossterm",
+ "dirs",
+ "edtui",
+ "httpmock",
+ "ignore",
+ "image",
+ "insta",
+ "mermaid-rs-renderer",
+ "mermaid-text",
+ "notify-debouncer-mini",
+ "pulldown-cmark",
+ "ratatui",
+ "ratatui-image",
+ "ratex-layout",
+ "ratex-parser",
+ "ratex-render",
+ "ratex-types",
+ "resvg 0.47.0",
+ "semver",
+ "serde",
+ "serde_json",
+ "syntect",
+ "tempfile",
+ "tokio",
+ "toml",
+ "unicode-width",
+ "ureq",
+]
+
+[[package]]
 name = "h2"
 version = "0.4.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1845,42 +1881,6 @@ checksum = "c0aeb26bf5e836cc1c341c8106051b573f1766dfa05aa87f0b98be5e51b02303"
 dependencies = [
  "nix",
  "winapi",
-]
-
-[[package]]
-name = "markdown-tui-explorer"
-version = "1.35.4"
-dependencies = [
- "anyhow",
- "base64 0.22.1",
- "clap",
- "crossterm",
- "dirs",
- "edtui",
- "httpmock",
- "ignore",
- "image",
- "insta",
- "mermaid-rs-renderer",
- "mermaid-text",
- "notify-debouncer-mini",
- "pulldown-cmark",
- "ratatui",
- "ratatui-image",
- "ratex-layout",
- "ratex-parser",
- "ratex-render",
- "ratex-types",
- "resvg 0.47.0",
- "semver",
- "serde",
- "serde_json",
- "syntect",
- "tempfile",
- "tokio",
- "toml",
- "unicode-width",
- "ureq",
 ]
 
 [[package]]

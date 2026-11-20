@@ -8,7 +8,7 @@ use std::process::Command;
 
 /// Use Cargo's compiled binary path, including custom target directories.
 fn binary() -> std::path::PathBuf {
-    env!("CARGO_BIN_EXE_markdown-reader").into()
+    env!("CARGO_BIN_EXE_gmd").into()
 }
 
 /// Happy-path: exporting the project's own `sample.md` produces a non-empty
