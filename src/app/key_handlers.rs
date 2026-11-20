@@ -1102,6 +1102,12 @@ impl App {
         theme: crate::theme::Theme,
     ) {
         let math_mode = self.math_mode;
+        let dirty = self
+            .tabs
+            .active_tab()
+            .and_then(|t| t.hybrid.as_ref())
+            .map(|h| h.is_dirty())
+            .unwrap_or(false);
         match cmd {
             "w" => {
                 // Full re-parse before save to eliminate any incremental drift,
@@ -1120,7 +1126,11 @@ impl App {
                 }
                 self.save_hybrid_content(false);
             }
-            "wq" => {
+            // `:x` mirrors vim: write only when there are changes, then close.
+            "x" if !dirty => {
+                self.exit_hybrid_mode();
+            }
+            "wq" | "x" => {
                 if let Some(tab) = self.tabs.active_tab_mut()
                     && let Some(h) = tab.hybrid.as_mut()
                 {
@@ -1137,12 +1147,6 @@ impl App {
             }
             "q" => {
                 // Refuse to quit if there are unsaved edits — mirror vim semantics.
-                let dirty = self
-                    .tabs
-                    .active_tab()
-                    .and_then(|t| t.hybrid.as_ref())
-                    .map(|h| h.is_dirty())
-                    .unwrap_or(false);
                 if dirty {
                     if let Some(tab) = self.tabs.active_tab_mut()
                         && let Some(h) = tab.hybrid.as_mut()

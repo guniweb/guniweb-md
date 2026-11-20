@@ -211,7 +211,8 @@ drawn on the left of the viewer content when enabled.
   [edtui](https://crates.io/crates/edtui)). Leaving a block re-renders it
   instantly. Tables open a dedicated table editor; mermaid blocks re-render
   the diagram on cursor-leave. `:w` saves atomically, `:q` returns to the
-  rendered view, `:wq` does both, `:q!` force-discards unsaved changes.
+  rendered view, `:wq` does both, `:x` saves only if there are changes and
+  returns, `:q!` force-discards unsaved changes.
   Press `I` to open the legacy fullscreen editor instead.
 - **Rendered markdown preview** — headings, lists, code blocks, tables,
   links, blockquotes, task lists, and more, styled from the active theme.
@@ -499,7 +500,7 @@ In addition to arrows, Home/End, Page Up/Down, Backspace and Delete:
 | `Cmd+Backspace` / `Ctrl+U` | Delete to line start |
 | `Ctrl+K` | Delete to line end |
 | `Ctrl+A` / `Ctrl+E` | Line start / end (works over SSH) |
-| `:w` / `:wq` / `:q` / `:q!` | Save / save+quit / quit / force quit |
+| `:w` / `:wq` / `:x` / `:q` / `:q!` | Save / save+quit / save-if-changed+quit / quit / force quit |
 
 > **macOS Option key gotcha**: by default Apple Terminal and some iTerm2
 > profiles send Option as a literal Esc-prefix (`Esc b` for Option+Left,

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `:x` in the hybrid and fullscreen editors saves when there are unsaved
+  changes and then closes, like vim.
+
 ## [1.35.4] — 2026-11-05
 
 ### Fixed

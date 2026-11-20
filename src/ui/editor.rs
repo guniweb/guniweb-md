@@ -115,7 +115,9 @@ pub fn dispatch_command(editor: &mut TabEditor, cmd: &str) -> CommandOutcome {
             }
         }
         "q!" => CommandOutcome::Close,
-        "wq" => CommandOutcome::SaveThenClose,
+        // `:x` mirrors vim: write only when there are changes, then close.
+        "x" if !editor.is_dirty() => CommandOutcome::Close,
+        "wq" | "x" => CommandOutcome::SaveThenClose,
         other => {
             editor.status_message = Some(format!("unknown command: :{other}"));
             CommandOutcome::Handled
@@ -310,6 +312,21 @@ mod tests {
         let mut editor = make_editor("content");
         let outcome = dispatch_command(&mut editor, "wq");
         assert_eq!(outcome, CommandOutcome::SaveThenClose);
+    }
+
+    #[test]
+    fn command_x_saves_then_closes_when_dirty() {
+        let mut editor = make_editor("original");
+        editor.baseline = "different".to_string();
+        let outcome = dispatch_command(&mut editor, "x");
+        assert_eq!(outcome, CommandOutcome::SaveThenClose);
+    }
+
+    #[test]
+    fn command_x_closes_without_saving_when_clean() {
+        let mut editor = make_editor("content");
+        let outcome = dispatch_command(&mut editor, "x");
+        assert_eq!(outcome, CommandOutcome::Close);
     }
 
     #[test]
