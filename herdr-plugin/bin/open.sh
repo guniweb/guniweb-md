@@ -5,8 +5,8 @@
 #   sh bin/open.sh [PATH]       open PATH, or the clicked URL from a link handler
 #   sh bin/open.sh --browse     open the directory tree of the focused pane's cwd
 #
-# A Markdown pane that already exists in the same tab is reused, unless it is
-# being edited: then a new pane opens so unsaved changes are never touched.
+# A Markdown pane that already exists in the same tab is reused: files open
+# there as a new tab, and unsaved changes in that pane are never touched.
 
 set -eu
 
@@ -55,13 +55,19 @@ else
   target=$path
 fi
 
-# Reuse a Markdown pane of ours in the same tab if it is safe to restart.
+# Reuse a Markdown pane of ours in the same tab. A file is handed to the
+# running gmd, which opens it as a new tab (or once editing ends). A directory
+# needs a restart, which only happens while gmd is not editing.
 tab=$(pane_field tab_id)
 if [ -n "$tab" ]; then
   for pane in $("$herdr" pane list 2>/dev/null |
     jq -r --arg tab "$tab" '.result.panes[] | select(.tab_id == $tab and .label == "Markdown") | .pane_id'); do
     state=$state_dir/viewer-$pane
     [ -f "$state" ] || continue
+    if [ -f "$target" ] && [ -f "$state.ctl" ]; then
+      printf '%s\n' "$target" >> "$state.ctl"
+      exit 0
+    fi
     # The status line starts with gmd's mode, e.g. " VIEWER  | ...".
     mode=$("$herdr" pane read "$pane" --source visible --lines 1 2>/dev/null | awk '{print $1; exit}')
     case $mode in

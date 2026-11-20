@@ -121,6 +121,14 @@ struct Cli {
     /// the binary is piped to (e.g. `cat doc.md | markdown-reader --section NAME`).
     #[arg(long, value_name = "NAME", conflicts_with_all = ["export_html", "check_links"])]
     section: Option<String>,
+
+    /// Watch FILE for open requests from other processes.
+    ///
+    /// Every line appended to FILE while the TUI runs is opened as a new tab.
+    /// Requests that arrive while you are editing open once the editor
+    /// closes. Used by the herdr plugin to reuse a running pane.
+    #[arg(long, value_name = "FILE")]
+    control: Option<PathBuf>,
 }
 
 /// Read all of stdin into a freshly-created temp file with a `.md` suffix.
@@ -361,9 +369,9 @@ async fn main() -> Result<()> {
     let backend = CrosstermBackend::new(stdout);
     let mut terminal = Terminal::new(backend)?;
 
-    let result = App::new(root, initial_file, initial_display_name)
-        .run(&mut terminal)
-        .await;
+    let mut app = App::new(root, initial_file, initial_display_name);
+    app.control_file = cli.control.clone();
+    let result = app.run(&mut terminal).await;
     // Keep `stdin_temp` alive until after the App exits so the file
     // doesn't get unlinked while the App is reading it. Dropping it
     // here removes the temp file on disk.

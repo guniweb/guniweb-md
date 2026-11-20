@@ -550,6 +550,44 @@ impl App {
             tab.editor = None;
         }
         self.focus = Focus::Viewer;
+        self.open_pending();
+    }
+
+    /// Open a file requested by another process in a new tab.
+    ///
+    /// While the user is editing, switching tabs would strand the edit, so the
+    /// request waits in [`App::pending_opens`] until the editor closes.
+    pub fn request_open(&mut self, path: PathBuf) {
+        if !path.is_file() {
+            return;
+        }
+        if !matches!(self.focus, Focus::HybridEditor | Focus::Editor) {
+            self.expand_and_select(&path);
+            self.open_or_focus_named(path, true, None, None);
+            return;
+        }
+        let name = path.file_name().map_or_else(
+            || path.display().to_string(),
+            |n| n.to_string_lossy().into_owned(),
+        );
+        let message = format!("{name} opens when you stop editing");
+        if let Some(tab) = self.tabs.active_tab_mut() {
+            if let Some(h) = tab.hybrid.as_mut() {
+                h.status_message = Some(message);
+            } else if let Some(editor) = tab.editor.as_mut() {
+                editor.status_message = Some(message);
+            }
+        }
+        if !self.pending_opens.contains(&path) {
+            self.pending_opens.push(path);
+        }
+    }
+
+    /// Open every file that was requested while the user was editing.
+    fn open_pending(&mut self) {
+        for path in std::mem::take(&mut self.pending_opens) {
+            self.request_open(path);
+        }
     }
 
     /// Apply a successful editor save.
@@ -722,6 +760,7 @@ impl App {
                 tab2.view.scroll_to_cursor(vh);
             }
         }
+        self.open_pending();
     }
 
     // ── Hybrid editor save ────────────────────────────────────────────────────

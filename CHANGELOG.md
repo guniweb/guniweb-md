@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `:x` in the hybrid and fullscreen editors saves when there are unsaved
   changes and then closes, like vim.
 
+- `--control FILE`: a running `gmd` opens every path appended to FILE as a
+  new tab; requests that arrive while you edit open once the editor closes.
+  The herdr plugin uses it to reuse its pane instead of restarting `gmd`.
+
 ### Changed
 
 - Hybrid editing: a bare `:` is now inserted as text, so `Note:`, `12:30`

@@ -2227,6 +2227,36 @@ fn hybrid_source(app: &App) -> String {
         .clone()
 }
 
+/// An open request while viewing opens the file in a new tab right away.
+#[test]
+fn request_open_while_viewing_adds_tab() {
+    let (mut app, _path) = make_app_with_rendered_tab("# One\n");
+    let dir = tempfile::tempdir().expect("tempdir");
+    let other = dir.path().join("other-request.md");
+    std::fs::write(&other, "# Two\n").expect("write");
+    let before = app.tabs.tabs.len();
+    app.request_open(other.clone());
+    assert_eq!(app.tabs.tabs.len(), before + 1);
+    assert!(app.pending_opens.is_empty());
+}
+
+/// An open request while editing waits until the editor closes.
+#[test]
+fn request_open_while_editing_waits_for_editor_exit() {
+    let (mut app, _path) = make_app_with_rendered_tab("# One\n");
+    let dir = tempfile::tempdir().expect("tempdir");
+    let other = dir.path().join("other-request-editing.md");
+    std::fs::write(&other, "# Two\n").expect("write");
+    app.enter_hybrid_mode();
+    let before = app.tabs.tabs.len();
+    app.request_open(other.clone());
+    assert_eq!(app.tabs.tabs.len(), before, "editing tab must stay active");
+    assert_eq!(app.pending_opens, vec![other.clone()]);
+    app.exit_hybrid_mode();
+    assert_eq!(app.tabs.tabs.len(), before + 1);
+    assert!(app.pending_opens.is_empty());
+}
+
 /// A bare `:` in hybrid mode is text, so `Note:` or `:)` can be typed.
 #[test]
 fn hybrid_bare_colon_inserts_text() {

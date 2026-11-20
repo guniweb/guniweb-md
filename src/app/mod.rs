@@ -502,6 +502,12 @@ pub struct App {
     /// Used to show `<stdin>` when the content was piped via stdin so the
     /// tab strip shows a conventional Unix sentinel instead of the temp-file name.
     pub initial_display_name: Option<String>,
+    /// Control file watched for open requests from other processes, set by
+    /// the `--control` CLI flag. `None` disables the feature.
+    pub control_file: Option<PathBuf>,
+    /// Files requested through the control file while the user was editing.
+    /// They open as soon as the editor closes, so unsaved edits stay put.
+    pub pending_opens: Vec<PathBuf>,
 }
 
 impl App {
@@ -603,6 +609,8 @@ impl App {
             pending_jump: None,
             initial_file,
             initial_display_name,
+            control_file: None,
+            pending_opens: Vec::new(),
         };
 
         app.restore_session();
@@ -876,6 +884,9 @@ impl App {
 
         let root_clone = self.root.clone();
         let _watcher = crate::fs::watcher::spawn_watcher(&root_clone, tx.clone());
+        if let Some(control) = self.control_file.clone() {
+            crate::fs::control::spawn_control_watcher(control, tx.clone());
+        }
 
         loop {
             terminal.draw(|f| crate::ui::draw(f, self))?;
@@ -1001,6 +1012,7 @@ impl App {
                     self.tree.reveal_path(&path);
                 }
             }
+            Action::OpenRequested(path) => self.request_open(path),
             Action::Resize(_, _) => {}
             Action::Mouse(m) => self.handle_mouse(m),
             Action::MermaidReady(id, entry) => {

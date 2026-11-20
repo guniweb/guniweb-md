@@ -72,6 +72,9 @@ pub enum Action {
     /// Notify the app that one or more watched files changed on disk.
     FilesChanged(Vec<PathBuf>),
 
+    /// Another process asked this instance to open a file (see `--control`).
+    OpenRequested(PathBuf),
+
     /// Terminal was resized to the given (width, height).
     Resize(u16, u16),
 
