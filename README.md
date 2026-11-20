@@ -1,3 +1,10 @@
+<p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark.svg">
+    <img src="assets/logo.svg" alt="GuniWeb md" width="294">
+  </picture>
+</p>
+
 # guniweb-md
 
 Read **and** edit Markdown right next to your coding agent.
