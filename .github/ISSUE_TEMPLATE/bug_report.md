@@ -12,7 +12,7 @@ A clear and concise description of what the bug is.
 
 ## Steps to Reproduce
 
-1. Run `markdown-reader` with ...
+1. Run `gmd` with ...
 2. Open file ...
 3. Observe ...
 
@@ -36,7 +36,7 @@ screenshots. For TUI display issues, screenshots help a lot.
 | Terminal | e.g. iTerm2, Ghostty, kitty, tmux, Alacritty |
 | Image protocol | e.g. iTerm2, Kitty, Sixel, none |
 | Rust version | `rustc --version` |
-| markdown-reader version | `markdown-reader --version` |
+| gmd version | `gmd --version` |
 | mermaid-text version | check `Cargo.toml` or `cargo install` output |
 | Installation method | `cargo install` / binary release / built from source |
 

@@ -1,12 +1,12 @@
 # Contributing
 
-Thanks for contributing to `markdown-reader`.
+Thanks for contributing to `guniweb-md`.
 
 ## Development setup
 
 ```sh
-git clone https://github.com/leboiko/markdown-reader.git
-cd markdown-reader
+git clone https://github.com/guniweb/guniweb-md.git
+cd guniweb-md
 cargo build
 ```
 

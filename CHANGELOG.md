@@ -1,11 +1,18 @@
 # Changelog
 
-All notable changes to `markdown-tui-explorer` are documented here.
+All notable changes to `guniweb-md` are documented here. Entries from
+1.35.4 down are the history of [markdown-reader](https://github.com/leboiko/markdown-reader)
+(crate `markdown-tui-explorer`) by leboiko, which guniweb-md is forked from.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.1.0] — 2026-11-21
+
+First release of guniweb-md, forked from markdown-reader 1.35.4. The binary
+is now `gmd`; config and session state live under `guniweb-md`.
 
 ### Added
 
@@ -21,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hybrid editing: a bare `:` is now inserted as text, so `Note:`, `12:30`
   or `:)` can be typed. Commands start with `Esc` then `:` (or `Alt+:`), and
   the status bar shows how.
+
+## Upstream history (markdown-reader)
 
 ## [1.35.4] — 2026-11-05
 

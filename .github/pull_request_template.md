@@ -18,7 +18,7 @@ Describe how you tested this change.
 
 ## Checklist
 
-- [ ] CHANGELOG.md entry added (root for `markdown-tui-explorer`, crate-local for `mermaid-text`)
+- [ ] CHANGELOG.md entry added (root for `guniweb-md`, crate-local for `mermaid-text`)
 - [ ] No new `clippy` warnings (`cargo clippy --all-targets -- -D warnings`)
 - [ ] Documentation updated if public API changed
 - [ ] Version bumped in `Cargo.toml` if user-visible

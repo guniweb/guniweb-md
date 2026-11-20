@@ -23,7 +23,7 @@ Have you thought about other approaches? Why do you prefer the one above?
 ## Scope
 
 Which component does this affect?
-- [ ] `markdown-reader` TUI
+- [ ] `gmd` TUI
 - [ ] `mermaid-text` library / CLI
 - [ ] Both / general
 

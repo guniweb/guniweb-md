@@ -217,9 +217,9 @@ pub fn print_upgrade_notice_if_outdated(current_version: &str, check_for_updates
                 "\n{bar}\n \
                  {CRATE_NAME} {current_version} \u{2192} {} available\n\n \
                  Upgrade with:\n   \
-                 cargo install {CRATE_NAME}\n \
+                 cargo install --git https://github.com/guniweb/guniweb-md --locked\n \
                  Or download a pre-built binary:\n   \
-                 https://github.com/leboiko/markdown-reader/releases/latest\n{bar}",
+                 https://github.com/guniweb/guniweb-md/releases/latest\n{bar}",
                 cache.latest_version,
             );
         }
