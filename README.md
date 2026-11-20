@@ -65,7 +65,8 @@ at the plugin:
 |---|---|---|
 | Agent output | Ctrl+click on a `.md` link | Open the file in the Markdown pane |
 | Markdown pane | `i` | Edit in hybrid live preview |
-| Editing | `:w` / `:x` / `:wq` / `:q!` | Save / save if changed and stop editing / save and stop / discard |
+| Editing | `Esc` then `:w` / `:x` / `:wq` / `:q!` | Save / save if changed and stop editing / save and stop / discard |
+| Editing | `:` | Just a colon: type `Note:`, `12:30` or `:)` freely |
 | Markdown pane | `q` | Close the pane |
 | Markdown pane | `?` | All keyboard shortcuts |
 

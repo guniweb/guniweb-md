@@ -2214,6 +2214,79 @@ fn i_keybinding_enters_hybrid_mode_by_default() {
     );
 }
 
+fn hybrid_key(app: &mut App, code: KeyCode, modifiers: KeyModifiers) {
+    app.handle_hybrid_key(crossterm::event::KeyEvent::new(code, modifiers));
+}
+
+fn hybrid_source(app: &App) -> String {
+    let tab = app.tabs.active_tab().expect("tab must exist");
+    tab.hybrid
+        .as_ref()
+        .expect("hybrid must be active")
+        .source
+        .clone()
+}
+
+/// A bare `:` in hybrid mode is text, so `Note:` or `:)` can be typed.
+#[test]
+fn hybrid_bare_colon_inserts_text() {
+    let (mut app, _path) = make_app_with_rendered_tab("Hi\n");
+    app.handle_viewer_key(KeyCode::Char('i'), KeyModifiers::empty());
+    hybrid_key(&mut app, KeyCode::Char(':'), KeyModifiers::NONE);
+    hybrid_key(&mut app, KeyCode::Char(')'), KeyModifiers::NONE);
+    let tab = app.tabs.active_tab().expect("tab must exist");
+    let hybrid = tab.hybrid.as_ref().expect("hybrid must be active");
+    assert!(
+        hybrid.command_line.is_none(),
+        "bare `:` must not open the command line"
+    );
+    assert!(
+        hybrid_source(&app).contains(":)"),
+        "`:)` must be inserted as text"
+    );
+}
+
+/// `Esc` then `:` opens the command line, like vim.
+#[test]
+fn hybrid_esc_then_colon_opens_command_line() {
+    let (mut app, _path) = make_app_with_rendered_tab("Hi\n");
+    app.handle_viewer_key(KeyCode::Char('i'), KeyModifiers::empty());
+    hybrid_key(&mut app, KeyCode::Esc, KeyModifiers::NONE);
+    hybrid_key(&mut app, KeyCode::Char(':'), KeyModifiers::NONE);
+    let tab = app.tabs.active_tab().expect("tab must exist");
+    let hybrid = tab.hybrid.as_ref().expect("hybrid must be active");
+    assert_eq!(hybrid.command_line.as_deref(), Some(""));
+    assert!(
+        !hybrid_source(&app).contains(':'),
+        "`:` must not be inserted"
+    );
+}
+
+/// Terminals that merge `Esc` and `:` into one event report `Alt+:`.
+#[test]
+fn hybrid_alt_colon_opens_command_line() {
+    let (mut app, _path) = make_app_with_rendered_tab("Hi\n");
+    app.handle_viewer_key(KeyCode::Char('i'), KeyModifiers::empty());
+    hybrid_key(&mut app, KeyCode::Char(':'), KeyModifiers::ALT);
+    let tab = app.tabs.active_tab().expect("tab must exist");
+    let hybrid = tab.hybrid.as_ref().expect("hybrid must be active");
+    assert_eq!(hybrid.command_line.as_deref(), Some(""));
+}
+
+/// Any key between `Esc` and `:` disarms the command line again.
+#[test]
+fn hybrid_esc_is_disarmed_by_other_keys() {
+    let (mut app, _path) = make_app_with_rendered_tab("Hi\n");
+    app.handle_viewer_key(KeyCode::Char('i'), KeyModifiers::empty());
+    hybrid_key(&mut app, KeyCode::Esc, KeyModifiers::NONE);
+    hybrid_key(&mut app, KeyCode::Char('a'), KeyModifiers::NONE);
+    hybrid_key(&mut app, KeyCode::Char(':'), KeyModifiers::NONE);
+    let tab = app.tabs.active_tab().expect("tab must exist");
+    let hybrid = tab.hybrid.as_ref().expect("hybrid must be active");
+    assert!(hybrid.command_line.is_none());
+    assert!(hybrid_source(&app).contains("a:"));
+}
+
 /// Test 5 — pressing uppercase `I` now calls `enter_edit_mode` (legacy fullscreen
 /// edtui escape hatch) when `use_hybrid_by_default = true` (default since 1.33.0).
 #[test]

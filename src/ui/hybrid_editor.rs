@@ -91,6 +91,9 @@ pub struct HybridState {
     /// Ex-command line state (mirrors `TabEditor::command_line`).
     /// Sub-phase 6 wires this up; sub-phase 2 just initializes it to `None`.
     pub command_line: Option<String>,
+    /// `true` right after `Esc`: the next `:` opens the command line instead
+    /// of being inserted as text. Any other key disarms it.
+    pub command_armed: bool,
     /// Transient status message shown at the bottom of the screen.
     /// Sub-phase 6 wires this up; sub-phase 2 just initializes it to `None`.
     pub status_message: Option<String>,
@@ -120,6 +123,7 @@ impl HybridState {
             line_boundaries,
             active_block: None,
             command_line: None,
+            command_armed: false,
             status_message: None,
             close_after_save: false,
         }

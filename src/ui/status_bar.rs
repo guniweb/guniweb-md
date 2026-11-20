@@ -83,6 +83,14 @@ pub fn draw(f: &mut Frame, app: &App, area: Rect) {
                     .as_ref()
                     .map(|cmd| format!(":{cmd}"))
                     .or_else(|| h.status_message.clone())
+                    // A bare `:` is text in hybrid mode, so show how commands start.
+                    .or_else(|| {
+                        Some(if h.command_armed {
+                            " : command  (w save, x save+close, q! discard) ".to_string()
+                        } else {
+                            " Esc : command  (:w save, :x save+close, :q! discard) ".to_string()
+                        })
+                    })
             })
     } else {
         None

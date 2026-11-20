@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `:x` in the hybrid and fullscreen editors saves when there are unsaved
   changes and then closes, like vim.
 
+### Changed
+
+- Hybrid editing: a bare `:` is now inserted as text, so `Note:`, `12:30`
+  or `:)` can be typed. Commands start with `Esc` then `:` (or `Alt+:`), and
+  the status bar shows how.
+
 ## [1.35.4] — 2026-11-05
 
 ### Fixed

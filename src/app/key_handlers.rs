@@ -1027,17 +1027,24 @@ impl App {
             // Snapshot the active block index before the key lands.
             let prev_block_index = hybrid.active_block.map(|ab| ab.index);
 
+            // Hybrid mode is modeless, so a bare `:` is ordinary text (`Note:`,
+            // `12:30`, `:)`). Commands start like in vim with `Esc` then `:`;
+            // terminals that merge the two report `Alt+:`, which counts too.
+            let alt = key.modifiers.contains(crossterm::event::KeyModifiers::ALT)
+                || key.modifiers.contains(crossterm::event::KeyModifiers::META);
             match key.code {
-                KeyCode::Char(':') => {
+                KeyCode::Char(':') if hybrid.command_armed || alt => {
+                    hybrid.command_armed = false;
                     hybrid.command_line = Some(String::new());
                     // No cursor move → no block-leave possible.
                     return;
                 }
                 KeyCode::Esc => {
-                    // Already in normal mode — no-op.
+                    hybrid.command_armed = true;
                     return;
                 }
                 _ => {
+                    hybrid.command_armed = false;
                     // All editing and movement keys re-acquire a fresh `&mut tab`
                     // so we can split-borrow `hybrid` and `view` as mutable.
                     let _ = hybrid; // release the outer borrow of `tab.hybrid`
