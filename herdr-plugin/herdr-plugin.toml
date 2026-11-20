@@ -5,6 +5,10 @@ min_herdr_version = "0.9.5"
 description = "Read and edit Markdown files next to your agent: Ctrl+click a .md link to open it in a live-reloading split pane"
 platforms = ["linux", "macos"]
 
+# Uses gmd from PATH, or downloads the matching release (checksum verified).
+[[build]]
+command = ["sh", "install-gmd.sh"]
+
 # Open the clicked or given Markdown file in a split pane.
 [[actions]]
 id = "open"
@@ -18,6 +22,19 @@ id = "browse"
 title = "Browse Markdown files"
 contexts = ["pane"]
 command = ["sh", "bin/open.sh", "--browse"]
+
+# Pick one of the Markdown files written most recently near the focused pane.
+[[actions]]
+id = "recent"
+title = "Recently written Markdown"
+contexts = ["pane"]
+command = ["sh", "bin/recent.sh"]
+
+[[panes]]
+id = "picker"
+title = "Recent Markdown"
+placement = "overlay"
+command = ["sh", "bin/pick.sh"]
 
 [[panes]]
 id = "viewer"

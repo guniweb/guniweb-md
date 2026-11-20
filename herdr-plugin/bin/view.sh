@@ -6,6 +6,11 @@
 #   - "$state.next": a new target (e.g. a directory); open.sh quits gmd and
 #     this loop restarts it on that target.
 
+# Prefer gmd from PATH, then the copy that install-gmd.sh put into the plugin.
+if ! command -v gmd >/dev/null 2>&1 && [ -x bin/gmd ]; then
+  PATH=$PWD/bin:$PATH
+fi
+
 if ! command -v gmd >/dev/null 2>&1; then
   printf 'gmd (guniweb-md) is not installed on this machine.\n'
   printf 'See https://github.com/guniweb/guniweb-md#install\n\n'

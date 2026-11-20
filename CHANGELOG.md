@@ -23,6 +23,10 @@ is now `gmd`; config and session state live under `guniweb-md`.
   new tab; requests that arrive while you edit open once the editor closes.
   The herdr plugin uses it to reuse its pane instead of restarting `gmd`.
 
+- herdr plugin: Ctrl+click a `.md` link to open it next to the agent; `Ctrl+b m`
+  lists recently written Markdown (works on remote machines too); the plugin's
+  build step downloads a checksum-verified `gmd` when none is installed.
+
 ### Changed
 
 - Hybrid editing: a bare `:` is now inserted as text, so `Note:`, `12:30`
