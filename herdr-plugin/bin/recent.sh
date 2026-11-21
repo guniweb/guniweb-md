@@ -29,8 +29,9 @@ list=$state_dir/recent-${HERDR_PANE_ID:-$$}
     -o -type f \( -name '*.md' -o -name '*.markdown' \) -mtime "-$days" -print 2>/dev/null
   [ -d "$HOME/.claude/plans" ] &&
     find "$HOME/.claude/plans" -type f -name '*.md' -mtime "-$days" -print 2>/dev/null
-} | tr '\n' '\0' | xargs -0 ls -t 2>/dev/null | head -n 30 > "$list" || true
+} | tr '\n' '\0' | xargs -0 -r ls -t 2>/dev/null | head -n 30 > "$list" || true
 
+# Overlays always cover the active pane, i.e. the one the key was pressed in.
 "$herdr" plugin pane open --plugin "$HERDR_PLUGIN_ID" --entrypoint picker \
   --env "GMD_RECENT_LIST=$list" --env "GMD_RECENT_ROOT=$root" \
   --env "GMD_ORIGIN_PANE=${HERDR_PANE_ID:-}" >/dev/null

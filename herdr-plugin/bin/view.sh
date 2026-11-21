@@ -6,9 +6,16 @@
 #   - "$state.next": a new target (e.g. a directory); open.sh quits gmd and
 #     this loop restarts it on that target.
 
-# Prefer gmd from PATH, then the copy that install-gmd.sh put into the plugin.
-if ! command -v gmd >/dev/null 2>&1 && [ -x bin/gmd ]; then
-  PATH=$PWD/bin:$PATH
+# Prefer gmd from PATH. herdr servers started by SSH or systemd often lack the
+# user's bin directories, so also look there, then use the copy that
+# install-gmd.sh put into the plugin.
+if ! command -v gmd >/dev/null 2>&1; then
+  for dir in "$HOME/.local/bin" "$HOME/.cargo/bin" /opt/homebrew/bin /usr/local/bin "$PWD/bin"; do
+    if [ -x "$dir/gmd" ]; then
+      PATH=$dir:$PATH
+      break
+    fi
+  done
 fi
 
 if ! command -v gmd >/dev/null 2>&1; then

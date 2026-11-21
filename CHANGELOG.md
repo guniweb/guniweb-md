@@ -29,6 +29,9 @@ is now `gmd`; config and session state live under `guniweb-md`.
 
 ### Fixed
 
+- herdr plugin: finds `gmd` in `~/.local/bin`, `~/.cargo/bin` and Homebrew paths
+  when the herdr server's PATH lacks them (common for remote servers), and the
+  recent-files list stays empty instead of listing the plugin folder on Linux.
 - Hybrid editing: End / Ctrl+E now moves after the last character, so typed
   text is appended instead of landing before closing markup like `**`.
 

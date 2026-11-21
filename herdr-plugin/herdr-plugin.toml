@@ -1,7 +1,7 @@
 id = "guniweb.md"
 name = "guniweb-md"
 version = "0.1.0"
-min_herdr_version = "0.9.5"
+min_herdr_version = "0.9.3"
 description = "Read and edit Markdown files next to your agent: Ctrl+click a .md link to open it in a live-reloading split pane"
 platforms = ["linux", "macos"]
 
