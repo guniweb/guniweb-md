@@ -35,8 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # macOS runners bill 10x on private repos; add macos-latest once public.
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
@@ -53,8 +52,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # macOS runners bill 10x on private repos; add macos-latest once public.
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest]
         # MSRV is 1.92 (bumped from 1.85 when ascii-dag was adopted in
         # mermaid-text 0.14.0). Test stable + the floor.
         toolchain: [stable, "1.92"]

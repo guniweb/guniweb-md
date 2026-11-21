@@ -25,6 +25,10 @@ editor:
 It works the same on your laptop and on remote machines you reach through
 herdr, because it runs entirely in the terminal.
 
+![guniweb-md in 45 seconds: an agent writes Markdown, guniweb-md shows and edits it next to the agent, locally and on remote machines](docs/media/guniweb-md-demo.gif)
+
+[Watch the demo as MP4](docs/media/guniweb-md-demo.mp4)
+
 ![An agent writes PLAN.md on the left, guniweb-md shows it rendered on the right](docs/media/split-live-reload.png)
 
 | Pick a recently written file (`Ctrl+b m`) | Edit in hybrid live preview (`i`) |
@@ -33,25 +37,41 @@ herdr, because it runs entirely in the terminal.
 
 ## Status
 
-Early and private. Built and tested on macOS with iTerm2 and herdr 0.9.5.
+Early (0.1). Built on macOS with iTerm2; tested with herdr 0.9.3 and 0.9.5 on
+macOS and remote Linux machines. Feedback and issues are welcome.
 
 ## Install
 
-Build from source (Rust stable, edition 2024):
+Install the herdr plugin. Its build step downloads the matching prebuilt `gmd`
+for macOS or Linux and verifies its checksum, unless `gmd` is already on your
+`PATH`:
 
 ```sh
-cargo install --path . --locked
+herdr plugin install guniweb/guniweb-md/herdr-plugin
 ```
 
-This installs the `gmd` binary into `~/.cargo/bin`.
+The plugin needs `jq` on the machine where the herdr server runs. For remote
+machines, install the plugin there as well.
 
-### herdr plugin
+To use `gmd` on its own, download it from the
+[releases](https://github.com/guniweb/guniweb-md/releases) or build it from
+source (Rust stable, edition 2024):
 
 ```sh
-herdr plugin link /path/to/guniweb-md/herdr-plugin
+cargo install --git https://github.com/guniweb/guniweb-md --locked
 ```
 
-The plugin needs `gmd` and `jq` on the machine where the herdr server runs.
+### Key binding for recent files
+
+Bind `Ctrl+b m` in `~/.config/herdr/config.toml`:
+
+```toml
+[[keys.command]]
+key = "prefix+m"
+type = "plugin_action"
+command = "guniweb.md.recent"
+description = "recent markdown"
+```
 
 ### Make Ctrl+click reach herdr
 
