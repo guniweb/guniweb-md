@@ -35,6 +35,11 @@ is now `gmd`; config and session state live under `guniweb-md`.
 - Hybrid editing: End / Ctrl+E now moves after the last character, so typed
   text is appended instead of landing before closing markup like `**`.
 
+- Follow mode: `herdr-plugin/bin/follow.sh` is a Claude Code PostToolUse hook
+  that adds every Markdown file the agent writes as a tab to the Markdown pane
+  that is already open next to it. It never opens a pane on its own and works
+  on remote machines too.
+
 ### Changed
 
 - Hybrid editing: a bare `:` is now inserted as text, so `Note:`, `12:30`

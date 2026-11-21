@@ -4,6 +4,8 @@
 #
 #   sh bin/open.sh [PATH]       open PATH, or the clicked URL from a link handler
 #   sh bin/open.sh --browse     open the directory tree of the focused pane's cwd
+#   sh bin/open.sh --existing-only PATH
+#                               hand PATH to an open Markdown pane, never open one
 #
 # A Markdown pane that already exists in the same tab is reused: files open
 # there as a new tab, and unsaved changes in that pane are never touched.
@@ -25,6 +27,12 @@ pane_field() {
   [ -n "${HERDR_PANE_ID:-}" ] || return 0
   "$herdr" pane get "$HERDR_PANE_ID" 2>/dev/null | jq -r ".result.pane.$1 // empty"
 }
+
+existing_only=false
+if [ "${1:-}" = "--existing-only" ]; then
+  existing_only=true
+  shift
+fi
 
 if [ "${1:-}" = "--browse" ]; then
   target=$(pane_field foreground_cwd)
@@ -68,6 +76,7 @@ if [ -n "$tab" ]; then
       printf '%s\n' "$target" >> "$state.ctl"
       exit 0
     fi
+    [ "$existing_only" = false ] || continue
     # The status line starts with gmd's mode, e.g. " VIEWER  | ...".
     mode=$("$herdr" pane read "$pane" --source visible --lines 1 2>/dev/null | awk '{print $1; exit}')
     case $mode in
@@ -80,6 +89,8 @@ if [ -n "$tab" ]; then
     exit 0
   done
 fi
+
+[ "$existing_only" = false ] || exit 0
 
 # The pane command is relative to the plugin root, so no --cwd here.
 set -- plugin pane open --plugin "$HERDR_PLUGIN_ID" --entrypoint viewer \

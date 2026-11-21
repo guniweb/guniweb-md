@@ -14,7 +14,7 @@
 |---|---|
 | `src/` | `gmd` (Rust, edition 2024). `src/fs/control.rs` = `--control` file for open requests |
 | `crates/mermaid-text/` | upstream library crate, leave untouched unless needed |
-| `herdr-plugin/` | herdr plugin `guniweb.md`: `open.sh`, `view.sh`, `recent.sh`, `pick.sh`, `install-gmd.sh` |
+| `herdr-plugin/` | herdr plugin `guniweb.md`: `open.sh`, `view.sh`, `recent.sh`, `pick.sh`, `install-gmd.sh`, `follow.sh` (Claude Code hook, only feeds an already open pane) |
 | `demo/` | scripted VHS recording (`demo.tape`, `setup.sh`, `agent.sh`) for README media |
 | `docs/media/` | README screenshots (raw recordings are git-ignored) |
 | `assets/` | logo (`logo.svg`, `logo-dark.svg`, `mark.svg`) in the GuniWeb Match style |

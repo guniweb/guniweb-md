@@ -72,6 +72,34 @@ at the plugin:
    Restart the agent afterwards. herdr forwards only real OSC 8 `file://`
    links to plugins, not plain paths.
 
+### Follow mode for Claude Code (optional)
+
+A Claude Code hook can hand every Markdown file the agent writes to the
+Markdown pane next to it, as a new tab. It never opens a pane by itself: with
+no Markdown pane open nothing happens, and closing the pane (`q`) stops it.
+Because the hook runs where the agent runs, this also works on remote machines,
+where herdr does not yet forward link clicks to plugins. Add to
+`~/.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh /path/to/guniweb-md/herdr-plugin/bin/follow.sh 2>/dev/null || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
 ## Using it
 
 | Where | Key | Action |
