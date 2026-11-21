@@ -27,6 +27,11 @@ is now `gmd`; config and session state live under `guniweb-md`.
   lists recently written Markdown (works on remote machines too); the plugin's
   build step downloads a checksum-verified `gmd` when none is installed.
 
+### Fixed
+
+- Hybrid editing: End / Ctrl+E now moves after the last character, so typed
+  text is appended instead of landing before closing markup like `**`.
+
 ### Changed
 
 - Hybrid editing: a bare `:` is now inserted as text, so `Note:`, `12:30`

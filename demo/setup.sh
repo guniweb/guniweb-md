@@ -17,6 +17,16 @@ rm -rf "$home" /tmp/gmd-demo
 mkdir -p "$home/.config/herdr" "$work"
 cp demo/agent.sh "$work/agent.sh"
 
+# Neutral prompt instead of user@host for the shells herdr starts.
+printf "PROMPT='%%F{blue}%%1~%%f \$ '\n" > "$home/.zshrc"
+printf "PS1='\\W \$ '\n" > "$home/.bashrc"
+
+# gmd without the file tree, so the plan gets the full pane width.
+for dir in "$home/Library/Application Support/guniweb-md" "$home/.config/guniweb-md"; do
+  mkdir -p "$dir"
+  printf 'show_file_tree = false\n' > "$dir/config.toml"
+done
+
 cat > "$home/.config/herdr/config.toml" <<'EOF'
 onboarding = false
 

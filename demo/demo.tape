@@ -18,7 +18,7 @@ Set TypingSpeed 45ms
 Set CursorBlink false
 
 Hide
-Type `export PATH="$PWD/target/release:$PATH" GMD_DEMO=1`
+Type `unset HERDR_ENV HERDR_PANE_ID HERDR_TAB_ID HERDR_WORKSPACE_ID HERDR_SOCKET_PATH HERDR_BIN_PATH; export TERM_PROGRAM=vhs FORCE_HYPERLINK=1 PATH="$PWD/target/release:$PATH"`
 Enter
 Type `cd "$(sh demo/setup.sh)" && export HOME=/tmp/gmd-demo-home PS1='$ ' && clear`
 Enter

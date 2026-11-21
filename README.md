@@ -25,6 +25,12 @@ editor:
 It works the same on your laptop and on remote machines you reach through
 herdr, because it runs entirely in the terminal.
 
+![An agent writes PLAN.md on the left, guniweb-md shows it rendered on the right](docs/media/split-live-reload.png)
+
+| Pick a recently written file (`Ctrl+b m`) | Edit in hybrid live preview (`i`) |
+|---|---|
+| ![Recent Markdown picker](docs/media/recent-picker.png) | ![Hybrid editing](docs/media/hybrid-editing.png) |
+
 ## Status
 
 Early and private. Built and tested on macOS with iTerm2 and herdr 0.9.5.

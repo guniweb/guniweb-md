@@ -665,23 +665,19 @@ pub fn move_cursor_line_end(hybrid: &mut HybridState, view: &MarkdownViewState) 
         .get(row)
         .copied()
         .unwrap_or_else(|| hybrid.line_boundaries.last().copied().unwrap_or(0));
-    // `next_line_start` is the byte after the trailing `\n`; the `\n` itself is at
-    // `next_line_start - 1`.  We want the last *content* byte, which is one before
-    // the newline: `next_line_start - 2`.  On the final line (no trailing newline)
-    // we use `source.len()` directly.
-    let line_end_content = hybrid
+    // Hybrid editing is modeless (always inserting), so "end of line" is the
+    // position *after* the last character, where typing appends. That is the
+    // trailing `\n` (at `next_line_start - 1`), or `source.len()` on a final
+    // line without one. A `\r` of a CRLF line ending stays after the cursor.
+    let mut line_end = hybrid
         .line_boundaries
         .get(row + 1)
-        .map(|&next| next.saturating_sub(2))
-        .unwrap_or(hybrid.source.len().saturating_sub(1));
+        .map_or(hybrid.source.len(), |&next| next.saturating_sub(1));
+    if line_end > line_start && hybrid.source.as_bytes().get(line_end - 1) == Some(&b'\r') {
+        line_end -= 1;
+    }
     // Clamp to line_start so an empty line (just `\n`) lands at its own start.
-    let line_end = line_end_content.max(line_start);
-    // Snap to a UTF-8 char boundary in case the column falls inside a multi-byte char.
-    let new_byte = if line_end > line_start {
-        prev_char_boundary(&hybrid.source, line_end)
-    } else {
-        line_start
-    };
+    let new_byte = line_end.max(line_start);
     set_cursor_to_byte(hybrid, new_byte);
     recompute_active_block(hybrid, view);
 }
@@ -1328,11 +1324,24 @@ mod tests {
 
         move_cursor_line_end(&mut state, &view);
         let end_byte = byte_offset_from_editor_state(&state.editor_state, &state.line_boundaries);
-        // "second line" is 11 chars → last char at byte 11 + 10 = 21.
+        // "second line" is 11 chars → the position after it is byte 22.
         assert_eq!(
-            end_byte, 21,
-            "line_end must land at last char before the newline"
+            end_byte, 22,
+            "line_end must land after the last char, before the newline"
         );
+    }
+
+    /// Typing after `move_cursor_line_end` appends to the line, so closing
+    /// markup such as `**bold**` stays intact.
+    #[test]
+    fn typing_after_line_end_appends() {
+        let source = "Status: **ready**\nnext\n";
+        let (mut state, blocks) = setup(source);
+        let mut view = view_with_blocks(blocks);
+        set_cursor_to_byte(&mut state, 0);
+        move_cursor_line_end(&mut state, &view);
+        insert_char(&mut state, &mut view, '!');
+        assert_eq!(state.source, "Status: **ready**!\nnext\n");
     }
 
     /// The raw height of a block equals `wrap_spans(slice, width).len()`.
