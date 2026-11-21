@@ -74,6 +74,11 @@ if [ -n "$tab" ]; then
     [ -f "$state" ] || continue
     if [ -f "$target" ] && [ -f "$state.ctl" ]; then
       printf '%s\n' "$target" >> "$state.ctl"
+      # Make it visible where an explicit open went; follow mode stays quiet.
+      if [ "$existing_only" = false ]; then
+        "$herdr" notification show "Markdown" --body "$(basename "$target") opened in the Markdown pane" \
+          --position bottom-right --sound none >/dev/null 2>&1 || true
+      fi
       exit 0
     fi
     [ "$existing_only" = false ] || continue

@@ -40,6 +40,9 @@ is now `gmd`; config and session state live under `guniweb-md`.
   that is already open next to it. It never opens a pane on its own and works
   on remote machines too.
 
+- herdr plugin: when a file opens as a tab in an already open Markdown pane,
+  a herdr notification says so, so it is clear where it went.
+
 ### Changed
 
 - Hybrid editing: a bare `:` is now inserted as text, so `Note:`, `12:30`
